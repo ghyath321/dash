@@ -1,0 +1,32 @@
+{
+  "name": "admin",
+  "version": "1.0.0",
+  "description": "My wondrous Nuxt.js project",
+  "author": "Ghayath",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env NUXT_HOST=0.0.0.0 NUXT_PORT=8082 nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxtjs/auth": "^4.5.3",
+    "@nuxtjs/axios": "^5.0.0",
+    "@nuxtjs/bulma": "^1.2.0",
+    "cross-env": "^5.2.0",
+    "jquery": "^3.3.1",
+    "laravel-echo": "^1.4.1",
+    "nuxt": "^2.0.0",
+    "pusher-js": "^4.3.1"
+  },
+  "config": {
+    "nuxt": {
+      "host": "0.0.0.0",
+      "port": "8082"
+    }
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
