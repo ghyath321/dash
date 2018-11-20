@@ -4,7 +4,7 @@ module.exports = {
   mode: 'universal',
   
   axios: {
-      baseURL: 'http://view-ghyath4.c9users.io:8081/api'
+      baseURL: 'http://view-ghyath4.c9users.io:8081/api/admin'
   },
   env: {
     apiUrl: 'http://view-ghyath4.c9users.io:8081',
@@ -26,7 +26,7 @@ module.exports = {
     strategies: {
       local: {
         endpoints: {
-          login: { url: '/log-admin', method: 'post', propertyName: 'success.token' },
+          login: { url: '/login', method: 'post', propertyName: 'success.token' },
           logout: { url: '/logout-admin', method: 'post' },
           user: { url: '/admin', method: 'get', propertyName: 'admin' },
         }
@@ -51,7 +51,9 @@ module.exports = {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: ['~/plugins/axios.js',{src:'~/plugins/laravel-echo.js',ssr:false}],
+  plugins: ['~/plugins/axios.js','~/plugins/mixins/globals.js',
+  {src:'~/plugins/custom.js',ssr:false},
+  {src:'~/plugins/laravel-echo.js',ssr:false}],
 
   /*
   ** Nuxt.js modules
@@ -72,6 +74,7 @@ module.exports = {
     extractCSS: {
       allChunks: true
     },
+    
     postcss: {
       preset: {
         features: {
@@ -90,6 +93,7 @@ module.exports = {
     ** You can extend webpack config here
     */
     extend(config, ctx) {
+      config.resolve.alias['vue'] = 'vue/dist/vue.common'
        if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
           enforce: 'pre',

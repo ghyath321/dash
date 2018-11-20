@@ -6,7 +6,6 @@ export default function ({store, app,redirect }) {
          const code = parseInt(error.response && error.response.status)
          if(code == 401){
              store.$auth.logout();
-             redirect('/login');
          }
     })
     

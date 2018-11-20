@@ -14,8 +14,8 @@
         <li>
           <a>Manage Your Team</a>
           <ul>
-            <li><a>Users</a></li>
-            <li><a>Ads</a></li>
+            <li><nuxt-link to="/users">Users</nuxt-link></li>
+            <li><nuxt-link to="/ads">Ads</nuxt-link></li>
             <li><a>Features</a></li>
           </ul>
         </li>

@@ -16,9 +16,9 @@
     "@nuxtjs/bulma": "^1.2.0",
     "cross-env": "^5.2.0",
     "jquery": "^3.3.1",
-    "laravel-echo": "^1.4.1",
     "nuxt": "^2.0.0",
-    "pusher-js": "^4.3.1"
+    "pusher-js": "^4.3.1",
+    "laravel-vue-bulma-paginator": "^1.0.0"
   },
   "config": {
     "nuxt": {
