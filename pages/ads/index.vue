@@ -1,11 +1,9 @@
 <template>
     <section>
-       <div class="columns is-multiline">
-          <div class="column is-4 ad-card"  v-for="ad in data.ads.data">
-              <div class="ad">
-                  <h3 class="title is-3">{{ad.title}}</h3>
-              </div>
-          </div>
+       <div class="columns">
+            <div class="column is-12">
+                <each-ad v-for="ad in data.ads.data" :ad="ad" :key="ad.id"></each-ad>
+            </div>
        </div>
         <div class="is-clearfix"></div>
           <div>
@@ -18,21 +16,24 @@
 </template>
 
 <script>
+import eachAd from '~/components/eachAd.vue';
     export default{
+        watchQuery:['page'],
         async asyncData({app,query}){
              var page = 1;
             if(typeof query.page != undefined){
                 page = query.page
             }
             var res = await app.$axios.get('/ad/all?page='+page);
+            console.log(res.data)
             return {data:res.data};
         },
-         methods:{
+        components:{
+           eachAd,
+        },
+        methods:{
             actionPage(page){
                 this.$router.push(`/ads?page=${page}`);
-                this.$axios.get(`/ad/all?page=${page}`).then(res=>{
-                    this.data = res.data;
-                });
             }
         }
     }

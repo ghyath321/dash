@@ -8,21 +8,21 @@
            <div class="column is-12-touch">
              <div class="has-background-primary has-text-white has-text-centered">
                <h5 class="is-size-5">Users</h5>
-               <p>{{info.users.all.length}}</p>
+               <p>{{info.users.all}}</p>
              </div>
            </div>
            
            <div class="column is-6-touch">
              <div class="has-background-info has-text-white has-text-centered">
                <h5 class="is-size-5">Ads Posted</h5>
-               <p>{{info.ads.all.length - info.ads.not_accepted.length}}</p>
+               <p>{{info.ads.all - info.ads.not_accepted}}</p>
              </div>
            </div>
            
            <div class="column is-6-touch">
              <div class="has-background-danger has-text-white has-text-centered">
                <h5 class="is-size-5">Ads In Review</h5>
-               <p>{{info.ads.not_accepted.length}}</p>
+               <p>{{info.ads.not_accepted}}</p>
              </div>
            </div>
            
@@ -32,14 +32,14 @@
            <div class="column is-6-touch">
              <div class="has-background-success has-text-white has-text-centered">
                <h5 class="is-size-5">Features Ads</h5>
-               <p>{{info.ads.star_ads.length}}</p>
+               <p>{{info.ads.star_ads}}</p>
              </div>
            </div>
            
            <div class="column is-6-touch">
              <div class="has-background-success has-text-white has-text-centered">
                <h5 class="is-size-5">Features Top Side</h5>
-               <p>{{info.features.all.length}}</p>
+               <p>{{info.features.all}}</p>
              </div>
            </div>
            
@@ -53,7 +53,7 @@
 <script>
 import sideNav from '~/components/templates/sidebar.vue';
 export default {
-  
+  middleware:'auth',
   components:{
     sideNav
   },
