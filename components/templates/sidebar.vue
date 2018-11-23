@@ -16,7 +16,7 @@
           <ul>
             <li><nuxt-link to="/users">Users</nuxt-link></li>
             <li><nuxt-link to="/ads">Ads</nuxt-link></li>
-            <li><a>Features</a></li>
+            <li><nuxt-link to="/features">Features</nuxt-link></li>
           </ul>
         </li>
         <li><nuxt-link to="/coupon/generate">Coupons</nuxt-link></li>

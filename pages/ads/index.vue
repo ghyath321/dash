@@ -25,7 +25,6 @@ import eachAd from '~/components/eachAd.vue';
                 page = query.page
             }
             var res = await app.$axios.get('/ad/all?page='+page);
-            console.log(res.data)
             return {data:res.data};
         },
         components:{

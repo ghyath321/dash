@@ -16,7 +16,7 @@
                 <div class="file has-name is-boxed">
                   <label class="file-label is-centered">
                     <input class="file-input" @change="setImg($event)" type="file">
-                    <img class="is-rounded" width="100%" v-if="logo != ''" id="logo">
+                    <img class="is-rounded" width="100%" v-if="logo != ''" :src="URL+logo" id="logo">
                     <span class="file-cta">
                       <span class="file-icon">
                         <i class="fas fa-upload"></i>
@@ -65,7 +65,7 @@
          <div class="column is-8">
             <div class="field">
               <div class="control">
-                <a @click="create()" class="button is-info">Create</a>
+                <a @click="update()" class="button is-info">Update</a>
               </div>
             </div>
         </div>
@@ -88,12 +88,16 @@
                 logoName:''
             }
         },
+        async asyncData({app,params}){
+            var res = await app.$axios.get('/feature/show/'+params.editId);
+            return {feature:res.data.feature,logo:res.data.feature.logo};
+        },
         methods:{
-            create(){
+            update(){
                 var formData = new FormData();
                 formData.append('logo',this.logo);
                 formData.append('feature',JSON.stringify(this.feature));
-                this.$axios.post('/feature/add',formData).then(res=>{
+                this.$axios.post('/feature/edit',formData).then(res=>{
                     this.$router.push({path:'/features'})
                 });  
             },
