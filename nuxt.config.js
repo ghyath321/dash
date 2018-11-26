@@ -12,6 +12,9 @@ module.exports = {
   },
   head: {
     title: pkg.name,
+    bodyAttrs: {
+      class: 'fix-header fix-sidebar'
+    },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -20,6 +23,16 @@ module.exports = {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: 'https://use.fontawesome.com/releases/v5.3.1/css/all.css' }
+    ],
+    script: [
+      // Supported  Nuxt 1.0
+      { src: '/js/lib/jquery/jquery.min.js', body: true },
+      { src: '/js/lib/bootstrap/js/popper.min.js', body: true },
+      { src: '/js/lib/bootstrap/js/popper.min.js', body: true },
+      { src: '/js/jquery.slimscroll.js', body: true },
+      { src: '/js/sidebarmenu.js', body: true },
+      { src: '/js/lib/sticky-kit-master/dist/sticky-kit.min.js', body: true },
+      { src: '/js/custom.min.js', body: true },
     ]
   },
   auth: {
@@ -39,18 +52,20 @@ module.exports = {
       user: '/'
     }
   },
-  
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [ 'style-loader', 'css-loader' ]
+      },
+      
+    ]
+  },
   loading: { color: 'green',height:'2px' },
 
-  /*
-  ** Global CSS
-  */
   css: [
   ],
 
-  /*
-  ** Plugins to load before mounting the App
-  */
   plugins: ['~/plugins/axios.js','~/plugins/mixins/globals.js',
   {src:'~/plugins/custom.js',ssr:false},
   {src:'~/plugins/laravel-echo.js',ssr:false}],
@@ -60,7 +75,6 @@ module.exports = {
   */
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/bulma',
     '@nuxtjs/auth'
   ],
   /*

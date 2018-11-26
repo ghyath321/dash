@@ -8,7 +8,6 @@
               </div>
             </div>
         </div>
-        
          <div class="column is-5 has-text-centered">
             <div class="field">
               <label >Logo</label>
@@ -16,7 +15,7 @@
                 <div class="file has-name is-boxed">
                   <label class="file-label is-centered">
                     <input class="file-input" @change="setImg($event)" type="file">
-                    <img class="is-rounded" width="100%" v-if="logo != ''" id="logo">
+                    <img class="is-rounded" height="40%" width="100%" v-if="logo != ''" id="logo">
                     <span class="file-cta">
                       <span class="file-icon">
                         <i class="fas fa-upload"></i>

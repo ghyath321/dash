@@ -5,24 +5,19 @@
               <div class="card">
                   <div class="card-image has-text-centered">
                     <figure style="width:100%" class="image">
-                      <img v-if="user.pic" style="margin:auto;width:100px" class="display-d is-rounded" :src="URL+user.pic">
+                      <img v-if="user.pic" class="display-d is-rounded" :src="URL+user.pic">
                       <i v-else style="color:#00d1b2" class="fa-7x fas fa-user-circle"></i>
                     </figure>
                   </div>
                   <div class="card-content">
                     <div class="media">
-                      <div class="media-content">
-                        <p class="title is-4">{{user.name}}</p>
+                      <div class="media-content has-text-centered">
+                        <p class="title is-5">{{user.name}}</p>
                         <p class="subtitle is-6">{{user.created_at}}</p>
                       </div>
                     </div>
                 
                     <div class="content">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-                      <a href="#">#css</a> <a href="#">#responsive</a>
-                      <br>
-                      <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
                     </div>
                   </div>
                    <footer class="card-footer">
@@ -72,6 +67,13 @@
 
 <style>
     .user-card{
-        height:auto;
+        max-height:280px;
+        min-height:280px;
+    }
+    .card-image img{
+        margin:auto;
+        width:100px;
+        padding: 6px;
+        box-sizing: content-box;
     }
 </style>

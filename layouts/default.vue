@@ -1,13 +1,9 @@
 <template>
-  <div>
+  <div id="main-wrapper">
     <navbar></navbar>
-    <div class="columns">
-       <div class="column is-3">
-           <side-nav />
-       </div>
-       <div class="column">
-          <nuxt/>
-       </div>
+    <side-nav />
+    <div class="page-wrapper">
+      <nuxt/>
     </div>
   </div>
 </template>
@@ -31,3 +27,9 @@ export default{
   }
 }
 </script>
+
+<style lang="css">
+  @import '../static/css/lib/bootstrap/bootstrap.min.css';
+  @import '../static/css/helper.css';
+  @import '../static/css/style.css';
+</style>

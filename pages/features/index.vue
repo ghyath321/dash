@@ -4,7 +4,7 @@
         <h2 class="subtitle">All</h2>
         <hr />
         
-        <div class="column is-10">
+        <div class="column is-12">
             <div class="table__wrapper">
               <table class="table is-bordered is-fullwidth">
                 <thead>
@@ -44,7 +44,6 @@
 <script>
     export default{
         watchQuery:['update'],
-        
         async asyncData({app,error}){
             var res = await app.$axios.get('/feature/all').catch(err=>{
                 return error(err.response);
