@@ -1,67 +1,97 @@
 <template>
     <section>
-       <div class="columns is-multiline">
-          <div class="column is-4 user-card"  v-for="user in data.users.data">
-              <div class="card">
-                  <div class="card-image has-text-centered">
-                    <figure style="width:100%" class="image">
-                      <img v-if="user.pic" class="display-d is-rounded" :src="URL+user.pic">
-                      <i v-else style="color:#00d1b2" class="fa-7x fas fa-user-circle"></i>
-                    </figure>
-                  </div>
-                  <div class="card-content">
-                    <div class="media">
-                      <div class="media-content has-text-centered">
-                        <p class="title is-5">{{user.name}}</p>
-                        <p class="subtitle is-6">{{user.created_at}}</p>
-                      </div>
+        <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-title">
+                                <h4>Recent Orders </h4>
+                            </div>
+                            <div id="example23_filter" class="dataTables_filter">
+                                <label>Search:
+                                    <input @keyup.enter="filterUsers()" v-model="search.name" type="search" aria-controls="example23">
+                                </label>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Created At</th>
+                                                <th>Status</th>
+                                                <th>Options</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="user in data.users.data">
+                                                <td>
+                                                    <div class="round-img">
+                                                        <a href=""><img src="images/avatar/4.jpg" alt=""></a>
+                                                    </div>
+                                                </td>
+                                                <td>{{user.name}}</td>
+                                                <td><span>{{user.email}}</span></td>
+                                                <td><span>{{user.created_at}}</span></td>
+                                                <td>
+                                                    <span v-if="user.active" class="badge badge-success">Active</span>
+                                                    <span v-else class="badge badge-danger">Disabled</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                
-                    <div class="content">
-                    </div>
-                  </div>
-                   <footer class="card-footer">
-                    <a href="#" class="card-footer-item">Save</a>
-                    <a href="#" class="card-footer-item">Edit</a>
-                    <a href="#" class="card-footer-item">Delete</a>
-                  </footer>
                 </div>
-          </div>
-       </div>
-        <div class="is-clearfix"></div>
-          <div>
-            <nav class="pagination columns is-centered bw" role="navigation" aria-label="pagination">
-                 <paginations :limit="3" :data="data.users" @pagination-change-page="actionPage($event)"></paginations>
-            </nav>
-          </div>
-         <div class="is-clearfix"></div>
-      </section>
+                 <div class="is-clearfix"></div>
+                  <div>
+                    <nav class="pagination columns is-centered bw" role="navigation" aria-label="pagination">
+                         <paginations :limit="3" :data="data.users" @pagination-change-page="actionPage($event)"></paginations>
+                    </nav>
+                  </div>
+                 <div class="is-clearfix"></div>
+    </section>
 </template>
 
 
 <script>
     export default{
-        data(){
-            return {
-            }
-        },
+        watchQuery:['page','name','status'],
         async asyncData({app,query}){
             var page = 1;
+            var search = {
+                name:'',
+                status:''
+            };
+            if(typeof query.name != undefined){
+                search.name = query.name
+            }
+            if(typeof query.status != undefined){
+                search.status = query.status
+            }
             if(typeof query.page != undefined){
                 page = query.page
             }
-            var res = await app.$axios.get('/user/all?page='+page);
-            console.log(res.data.users.data)
-            return {data:res.data};
+            var res = await app.$axios.get('/user/all?page='+page,{params:{search:search}});
+            return {
+                data:res.data,
+                search,
+                page
+                
+            };
         },
         methods:{
             actionPage(page){
-                this.$router.push(`/users?page=${page}`);
-                this.$axios.get(`/user/all?page=${page}`).then(res=>{
-                    this.data = res.data;
-                });
+                this.$router.push({path:'',query:{status:this.search.status,name:this.search.name,page:page}});
+            },
+            filterUsers(){
+                this.$router.push({path:'',query:{status:this.search.status,name:this.search.name,page:1}});
             }
         }
+       
     }
 </script>
 

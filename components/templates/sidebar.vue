@@ -7,21 +7,22 @@
                     <ul id="sidebarnav">
                         <li class="nav-devider"></li>
                         <li class="nav-label">Home</li>
-                        <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-tachometer"></i><span class="hide-menu">Dashboard <span class="label label-rouded label-primary pull-right">2</span></span></a>
+                        <li> 
+                            <nuxt-link to="/" href="#" aria-expanded="false">
+                                <i class="fa fa-tachometer"></i>
+                                <span class="hide-menu">Dashboard</span>
+                            </nuxt-link>
+                        </li>
+                        <li class="nav-label">Data</li>
+                        <li> <a class="has-arrow" href="javascript:void(0)"  aria-expanded="false"><i class="fa fa-users"></i>
+                            <span class="hide-menu">Users</span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="index.html">Ecommerce </a></li>
-                                <li><a href="index1.html">Analytics </a></li>
+                                <li><nuxt-link to="/users">All</nuxt-link></li>
+                                <li><nuxt-link to="/users?status=0">Disabled</nuxt-link></li>
+                                <li><nuxt-link to="/users?status=1">Active</nuxt-link></li>
                             </ul>
                         </li>
-                        <li class="nav-label">Apps</li>
-                        <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-envelope"></i><span class="hide-menu">Email</span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="email-compose.html">Compose</a></li>
-                                <li><a href="email-read.html">Read</a></li>
-                                <li><a href="email-inbox.html">Inbox</a></li>
-                            </ul>
-                        </li>
-                        <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-bar-chart"></i><span class="hide-menu">Charts</span></a>
+                        <li> <a class="has-arrow  " href="javascript:void(0)" aria-expanded="false"><i class="fa fa-bar-chart"></i><span class="hide-menu">Charts</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="chart-flot.html">Flot</a></li>
                                 <li><a href="chart-morris.html">Morris</a></li>
