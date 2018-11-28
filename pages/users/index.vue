@@ -28,7 +28,7 @@
                                             <tr v-for="user in data.users.data">
                                                 <td>
                                                     <div class="round-img">
-                                                        <a href=""><img src="images/avatar/4.jpg" alt=""></a>
+                                                        <img v-if="user.pic" :src="URL+user.pic">
                                                     </div>
                                                 </td>
                                                 <td>{{user.name}}</td>
@@ -37,6 +37,10 @@
                                                 <td>
                                                     <span v-if="user.active" class="badge badge-success">Active</span>
                                                     <span v-else class="badge badge-danger">Disabled</span>
+                                                </td>
+                                                <td>
+                                                    <span @click="activation(user.id)" v-if="!user.active" class="btn btn-info">Active</span>
+                                                    <span @click="activation(user.id)" v-else class="btn btn-danger">Disabled</span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -59,7 +63,7 @@
 
 <script>
     export default{
-        watchQuery:['page','name','status'],
+        watchQuery:['page','name','status','update'],
         async asyncData({app,query}){
             var page = 1;
             var search = {
@@ -72,7 +76,7 @@
             if(typeof query.status != undefined){
                 search.status = query.status
             }
-            if(typeof query.page != undefined){
+            if(typeof query.page != undefined && query.page != 1){
                 page = query.page
             }
             var res = await app.$axios.get('/user/all?page='+page,{params:{search:search}});
@@ -89,7 +93,12 @@
             },
             filterUsers(){
                 this.$router.push({path:'',query:{status:this.search.status,name:this.search.name,page:1}});
-            }
+            },
+            activation(id){
+              this.$axios.post('/user/activation',{id:id}).then(res=>{
+                  this.$router.push({path:'',query:{status:this.search.status,name:this.search.name,page:1,update:id+'-changed-'+res.data.status}});
+              });
+           }
         }
        
     }

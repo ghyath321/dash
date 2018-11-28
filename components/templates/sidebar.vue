@@ -18,20 +18,19 @@
                             <span class="hide-menu">Users</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><nuxt-link to="/users">All</nuxt-link></li>
-                                <li><nuxt-link to="/users?status=0">Disabled</nuxt-link></li>
-                                <li><nuxt-link to="/users?status=1">Active</nuxt-link></li>
+                                <li><nuxt-link to="/users?status=disableds">Disabled</nuxt-link></li>
+                                <li><nuxt-link to="/users?status=actives">Active</nuxt-link></li>
                             </ul>
                         </li>
-                        <li> <a class="has-arrow  " href="javascript:void(0)" aria-expanded="false"><i class="fa fa-bar-chart"></i><span class="hide-menu">Charts</span></a>
+                        <li> <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                            <i class="fa fa-bar-chart"></i>
+                            <span class="hide-menu">Ads</span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="chart-flot.html">Flot</a></li>
-                                <li><a href="chart-morris.html">Morris</a></li>
-                                <li><a href="chart-chartjs.html">ChartJs</a></li>
-                                <li><a href="chart-chartist.html">Chartist </a></li>
-                                <li><a href="chart-amchart.html">AmChart</a></li>
-                                <li><a href="chart-echart.html">EChart</a></li>
-                                <li><a href="chart-sparkline.html">Sparkline</a></li>
-                                <li><a href="chart-peity.html">Peity</a></li>
+                                <li><nuxt-link to="/ads">All</nuxt-link></li>
+                                <li><nuxt-link to="/ads">Active</nuxt-link></li>
+                                <li><nuxt-link to="/ads">Disabled</nuxt-link></li>
+                                <li><nuxt-link to="/ads">In preview Ads</nuxt-link></li>
+                                <li><nuxt-link to="/ads">Featured Ads</nuxt-link></li>
                             </ul>
                         </li>
                         <li class="nav-label">Features</li>
