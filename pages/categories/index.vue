@@ -1,7 +1,7 @@
 <template>
-	<div class="container is-fluid pt-1">
-		<h4 class="has-text-centered" v-if="mode=='create'">Add New Category</h4>
-		<h4 class="has-text-centered" v-else>Update Category</h4>
+	<div>
+		<h4 class="text-center" v-if="mode=='create'">Add New Category</h4>
+		<h4 class="text-center" v-else>Update Category</h4>
 		<div class="columns">
 
 		    <div class="column">

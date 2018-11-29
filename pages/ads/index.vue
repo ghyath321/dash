@@ -20,7 +20,6 @@
                                                 <th>Title</th>
                                                 <th>City</th>
                                                 <th>Category</th>
-                                                <th>Created At</th>
                                                 <th>Status</th>
                                                 <th>Options</th>
                                             </tr>
@@ -30,22 +29,21 @@
                                                 <td>
                                                    {{ad.id}}
                                                 </td>
-                                                <td>{{ad.title.substr(0,10)}}...</td>
+                                                <td>{{ad.title.substr(0,15)}}...</td>
                                                 <td><span>{{ad.city.name}}</span></td>
                                                 <td>
-                                                    <span>
-                                                        {{ad.category.name}}
-                                                        {{(ad.section)?'->'+ad.section.name:''}}
-                                                    </span>
+                                                    <span class="badge badge-primary">{{ad.category.name}}</span>
+                                                    <span v-if="ad.section" class="badge badge-info">{{ad.section.name}}</span>
                                                 </td>
                                                 <td>
-                                                    <span v-if="ad.active" class="badge badge-success">Active</span>
-                                                    <span v-else class="badge badge-danger">Disabled</span>
+                                                    <span v-if="ad.active  && ad.is_accepted" class="badge badge-success">Active</span>
+                                                    <span v-if="!ad.is_accepted" class="badge badge-info">Pending</span>
+                                                    <span v-if="!ad.active" class="badge badge-danger">Disabled</span>
                                                 </td>
                                                 <td>
                                                     <span @click="accept(ad.id)" v-if="!ad.is_accepted" class="btn btn-success">Accept</span>
                                                     <span @click="activation(ad.id)" v-if="!ad.active" class="btn btn-info">Active</span>
-                                                    <span @click="activation(ad.id)" v-else class="btn btn-danger">Disabled</span>
+                                                    <span @click="activation(ad.id)" v-if="ad.active && ad.is_accepted" class="btn btn-danger">Disabled</span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -68,18 +66,24 @@
 <script>
 import eachAd from '~/components/eachAd.vue';
     export default{
-        watchQuery:['page','category','places','type','q','update'],
+        watchQuery:['page','category','place','type','q','update','status','is'],
         async asyncData({app,query}){
             var page = 1;
-            var search={word:undefined,places:[],category:undefined,type:[0,1]}; 
+            var search={word:undefined,place:undefined,category:undefined,type:[],status:undefined,is:undefined}; 
             if(typeof query.q != 'undefined'){
                search.word = query.q;
+            } 
+            if(typeof query.is != 'undefined'){
+               search.is = query.is;
+            }
+            if(typeof query.status != 'undefined'){
+               search.status = query.status;
             }
             if(typeof query.category != 'undefined'){
                search.category = query.category;
             }
-            if (typeof query.places != 'undefined') {
-              search.places = (query.places);
+            if (typeof query.place != 'undefined') {
+              search.place = query.place;
             }
             if (typeof query.type != 'undefined') {
               search.type = (query.type+'').split(",");
@@ -92,74 +96,46 @@ import eachAd from '~/components/eachAd.vue';
                 page,
                 data:res.data,
                 search
-                
             };
         },
         components:{
            eachAd,
         },
         methods:{
-            accept(id){
-                // var type     = (this.search.type.length > 0) ? this.search.type.join() : undefined;
-                // var category = (this.search.category) ? this.search.category : undefined;
-                // var places   = (this.search.places.length > 0) ? this.search.places.join() : undefined;
-                // var word     = (this.search.word) ? this.search.word : undefined;
-                this.$axios.post('/ad/accept',{id:id}).then(res=>{
-                    this.$router.push(
+            routing(data = null){
+                 var types = this.search.type.join();
+                 this.$router.push(
                         {
                             path:'',
                             query:{
                                 q:this.search.word,
                                 category:this.search.category,
-                                places:this.search.places,
-                                type:this.search.type.join(),
-                                page:this.page
+                                place:this.search.place,
+                                type:(types.length > 0)?types:undefined,
+                                status:this.search.status,
+                                is:this.search.is,
+                                update:(data.update)?data.update:undefined,
+                                page:(data.page)?data.page:(this.page > 1)?this.page:undefined
                             }
                             
                         }
                     );
+            },
+            accept(id){
+                this.$axios.post('/ad/accept',{id:id}).then(res=>{
+                   this.routing({update:`${id}-accept`});
                 })
             },
             actionPage(page){
-                // var type     = (this.search.type.length > 0) ? this.search.type.join() : undefined;
-                // var category = (this.search.category) ? this.search.category : undefined;
-                // var places   = (this.search.places.length > 0) ? this.search.places.join() : undefined;
-                // var word     = (this.search.word) ? this.search.word : undefined;
-                this.$router.push(
-                    {
-                        path:'',
-                        query:{
-                            q:this.search.word,
-                            category:this.search.category,
-                            places:this.search.places,
-                            type:this.search.type.join(),
-                            page:this.page
-                        }
-                        
-                    }
-                );
+               this.routing({page});
             },
             filterAds(){
-                // var type     = (this.search.type.length > 0) ? this.search.type.join() : undefined;
-                // var category = (this.search.category) ? this.search.category : undefined;
-                // var places   = (this.search.places.length > 0) ? this.search.places.join() : undefined;
-                // var word     = (this.search.word) ? this.search.word : undefined;
-                this.$router.push(
-                    {
-                        path:'',
-                        query:{
-                            q:this.search.word,
-                            category:this.search.category,
-                            places:this.search.places,
-                            type:this.search.type.join(),
-                            page:this.page
-                        }
-                        
-                    }
-                );
+               this.routing();
             },
             activation(id){
-                
+                this.$axios.post('/ad/activation',{id:id}).then(res=>{
+                   this.routing({update:`${id}-update-${res.data.status}`});
+                })
             }
         }
     }
