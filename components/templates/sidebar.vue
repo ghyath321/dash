@@ -40,23 +40,18 @@
                                 <span class="hide-menu">Categories</span>
                             </nuxt-link>
                         </li>
-						<li> <a class="has-arrow" href="javascript:void(0)" aria-expanded="false"><i class="fa fa-suitcase"></i><span class="hide-menu">Components <span class="label label-rouded label-danger pull-right">6</span></span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="uc-calender.html">Calender</a></li>
-                                <li><a href="uc-datamap.html">Datamap</a></li>
-                                <li><a href="uc-nestedable.html">Nestedable</a></li>
-                                <li><a href="uc-sweetalert.html">Sweetalert</a></li>
-                                <li><a href="uc-toastr.html">Toastr</a></li>
-                                <li><a href="uc-weather.html">Weather</a></li>
-                            </ul>
+                        <li> 
+                            <nuxt-link to="/coupons">
+                                <i class="far fa-newspaper"></i>
+                                <span class="hide-menu">Coupons</span>
+                            </nuxt-link>
                         </li>
-                        <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-wpforms"></i><span class="hide-menu">Forms</span></a>
+                        <li> 
+                        <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                            <i class="fa fa-wpforms"></i><span class="hide-menu">Featured Top Side</span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="form-basic.html">Basic Forms</a></li>
-                                <li><a href="form-layout.html">Form Layout</a></li>
-                                <li><a href="form-validation.html">Form Validation</a></li>
-                                <li><a href="form-editor.html">Editor</a></li>
-                                <li><a href="form-dropzone.html">Dropzone</a></li>
+                                <li> <nuxt-link to="/features">All</nuxt-link></li>
+                                <li><nuxt-link to="/features/add">Add</nuxt-link></li>
                             </ul>
                         </li>
                         <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-table"></i><span class="hide-menu">Tables</span></a>
