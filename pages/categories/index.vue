@@ -1,61 +1,54 @@
 <template>
-	<div>
+	<div class="container-fluid p-2">
 		<h4 class="text-center" v-if="mode=='create'">Add New Category</h4>
 		<h4 class="text-center" v-else>Update Category</h4>
-		<div class="columns">
+		
+		<div class="row">
 
-		    <div class="column">
+		    <div class="col">
 		      <label for="inputCity">Name</label>
-		      <input v-model="newsCats.category.name" type="text" class="input" id="inputCity">
+		      <input v-model="newsCats.category.name" type="text" class="form-control" id="inputCity">
 		    </div>
-		    <div class="column">
-		      <label for="inputZip">Icon</label>
-		      <input v-model="newsCats.category.icon" type="text" class="input" id="inputZip">
-		    </div>
-		     <div class="column">
-		       <label class="is-block" for="inputZip">New Row</label>
-		       <button @click="addSection()" class="button is-success"><i class="fa fa-plus"></i></button>
+		     <div class="col">
+		       <label for="inputZip">New Row</label>
+		       <button @click="addSection()" class="btn btn-success form-control"><i class="fa fa-plus"></i></button>
 		    </div>
 
 		</div>
 
-		<div class="columns w-100 float-right" v-for="section in newsCats.category.sections">
-		    <div class="column col-md-4">
+		<div class="row w-100 float-right" v-for="section in newsCats.category.sections">
+		    <div class="col-md-4">
 		      <label for="inputCity">Section Name</label>
-		      <input v-model="section.name" type="text" class="input" id="inputCity">
-		    </div>
-		    <div class="column col-md-4">
-		      <label for="inputZip">Icon</label>
-		      <input v-model="section.icon" type="text" class="input" id="inputZip">
+		      <input v-model="section.name" type="text" class="form-control" id="inputCity">
 		    </div>
 		</div>
 
-		<button v-if="mode=='create'" @click="submit()" class="button is-primary">Submit</button>
+		<div> <button v-if="mode=='create'" @click="submit()" class="btn m-4 btn-primary">Submit</button></div>
 		<template v-if="mode=='update'">
-			<button @click="submit()" class="button is-info">Update</button>
-			<button @click="mode = 'create'" class="button is-primary float-right">New Category</button>
+			<button @click="submit()" class="btn m-4 btn-info">Update</button>
+			<button @click="mode = 'create'" class="btn m-4 btn-primary float-right">New Category</button>
 		</template>
 		
 		<hr/>
 
-		<div id="accordion" class="container is-fluid" v-if="categories.length > 0">
-			  <div :id="'heading'+category.id" class="card is-pulled-left is-desktop-3 column is-tablet-4" v-for="category in categories">
-			    <div class="card-header" data-toggle="collapse" :data-target="'#collapse'+category.id" aria-expanded="true" :aria-controls="'collapse'+category.id">
+		<div class="container-fluid" v-if="categories.length > 0">
+			  <div class="card" v-for="category in categories">
+			    <div class="card-header">
 			      <h5 class="has-text-centered" >
 			      
 			        <h6 class="has-text-centered is-6">
 			          {{category.name}}
 			        </h6>
 			       	<span >
-			        	<i @click="confirm(category.id)" class="has-text-danger fa fa-trash"></i>
-			        	<i @click="fetch(category)" class="has-text-success fa fa-edit"></i>
+			        	<i @click="confirm(category.id)" class="color-danger fa fa-trash"></i>
+			        	<i @click="fetch(category)" class="color-success fa fa-edit"></i>
 			    	</span>
 			      </h5>
 			    </div>
 
-			    <div :id="'collapse'+category.id" class="collapse" :aria-labelledby="'heading'+category.id" data-parent="#accordion">
+			    <div>
 			      	<div class="card-body" style="padding-top:5px">
-						 <span style="margin:5px" v-for="section in category.sections" class="tag is-info">{{(section.name!='')?section.name:''}}</span>
+						 <span style="margin:5px" v-for="section in category.sections" class="badge badge-success">{{(section.name!='')?section.name:''}}</span>
 					</div>
 			    </div>
 		    </div>
@@ -69,7 +62,7 @@
 			return{
 				mode:'create',
 				newsCats:{
-					category:{sections:[{name:'',icon:''}]}					
+					category:{sections:[{name:''}]}					
 				}
 			}
 		},
@@ -82,14 +75,15 @@
 		},
 		methods:{
 			reset(){
-				this.newsCats.category = {sections:[{name:'',icon:''}]};
+				this.newsCats.category = {sections:[{name:''}]};
 			},
 			fetch(category){
 				this.mode = 'update';
 				this.newsCats.category = category;
+				window.scrollTo(0,0);
 			},
 			addSection(){
-				this.newsCats.category.sections.splice(this.newsCats.category.sections.length-1, 0,{name:'',icon:''});
+				this.newsCats.category.sections.splice(this.newsCats.category.sections.length-1, 0,{name:''});
 			},
 			submit(){
 				this.$axios.post('/category/add',{mode:this.mode,cats:this.newsCats}).then(res=>{
@@ -115,7 +109,6 @@
 		},
 		async asyncData({app}){
 		    var res = await app.$axios.get('/category/get-all');
-		    console.log(res.data);
 		    return {categories:res.data};
 		}
 	}
