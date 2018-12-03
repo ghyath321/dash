@@ -43,7 +43,8 @@
                                                 <td>
                                                     <span @click="accept(ad.id)" v-if="!ad.is_accepted" class="btn btn-success">Accept</span>
                                                     <span @click="activation(ad.id)" v-if="!ad.active" class="btn btn-info">Active</span>
-                                                    <span @click="activation(ad.id)" v-if="ad.active && ad.is_accepted" class="btn btn-danger">Disabled</span>
+                                                    <span @click="activation(ad.id)" v-if="ad.active && ad.is_accepted" class="btn btn-warning">Disabled</span>
+                                                    <span @click="Delete(ad.id)" class="btn btn-danger">Delete</span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -135,6 +136,25 @@ import eachAd from '~/components/eachAd.vue';
             activation(id){
                 this.$axios.post('/ad/activation',{id:id}).then(res=>{
                    this.routing({update:`${id}-update-${res.data.status}`});
+                })
+            },
+            Delete(id){
+                var _this = this;
+                this.$swal({
+                      title: 'Are you sure?',
+                      text: 'Do you want to delete this forever?',
+                      type: 'warning',
+                      showCancelButton: true,
+                      confirmButtonText: 'Delete',
+                      cancelButtonText: 'Cancel',
+                      reverseButtons: true
+                }).then((result) => {
+                  if (result.value) {
+                        _this.$axios.post('/ad/delete',{id:id}).then(res=>{
+                            _this.routing({update:`${id}-deleted`});
+                            _this.$toast.success('Deleted!')
+                        }); 
+                  }
                 })
             }
         }
