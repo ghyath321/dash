@@ -19,7 +19,7 @@ export default{
   mounted(){
     if(this.$auth.loggedIn){
         var id = this.$auth.user.id;
-        const channel = window.Pusher.subscribe(`private-supports.${id}`);
+        const channel = this.$Pusher.subscribe(`private-supports.${id}`);
         channel.bind('event',(e)=>{
           console.log(e);
         })

@@ -33,7 +33,6 @@
                                 <a class="dropdown-item" href="#"><i class="flag-icon flag-icon-de"></i> Dutch</a>
                             </div>
                         </li>
-                        <!-- Messages -->
                         <li class="nav-item dropdown mega-dropdown"> <a class="nav-link dropdown-toggle text-muted  " href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-th-large"></i></a>
                             <div class="dropdown-menu animated zoomIn">
                                 <ul class="mega-dropdown-menu row">
@@ -89,48 +88,30 @@
                                 </ul>
                             </div>
                         </li>
-                        <!-- End Messages -->
                     </ul>
                     <!-- User profile and search -->
                     <ul class="navbar-nav my-lg-0">
                         <!-- Comment -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted text-muted  " href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-bell"></i>
-        								<div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
-        							</a>
-                            <div class="dropdown-menu dropdown-menu-right mailbox animated zoomIn">
+                        <li class="nav-item dropdown" @click="clickNotifications()">
+                            <a @click.once="getNotifies()" href="#" class="nav-link dropdown-toggle text-muted text-muted"> 
+                                <i class="fa fa-bell"></i>
+								<div class="notify" v-if="notifiesNum > 0"> <span class="badge badge-danger">{{notifiesNum}}</span> </div>
+        					</a>
+                            <div :class="{'active':data.notify}" class="dropdown-menu dropdown-menu-right mailbox animated zoomIn">
                                 <ul>
                                     <li>
                                         <div class="drop-title">Notifications</div>
                                     </li>
                                     <li>
                                         <div class="message-center">
-                                            <!-- Message -->
-                                            <a href="#">
-                                                <div class="btn btn-danger btn-circle m-r-10"><i class="fa fa-link"></i></div>
-                                                <div class="mail-contnet">
-                                                    <h5>This is title</h5> <span class="mail-desc">Just see the my new admin!</span> <span class="time">9:30 AM</span>
+                                            <a href="#" v-for="notification in notifications">
+                                                <div class="btn btn-circle m-r-10">
+                                                    <img v-if="notification.data.user_pic" width="30px" :src="URL+notification.data.user_pic">
+                                                    <i v-else class="ti-user"></i>
                                                 </div>
-                                            </a>
-                                            <!-- Message -->
-                                            <a href="#">
-                                                <div class="btn btn-success btn-circle m-r-10"><i class="ti-calendar"></i></div>
                                                 <div class="mail-contnet">
-                                                    <h5>This is another title</h5> <span class="mail-desc">Just a reminder that you have event</span> <span class="time">9:10 AM</span>
-                                                </div>
-                                            </a>
-                                            <!-- Message -->
-                                            <a href="#">
-                                                <div class="btn btn-info btn-circle m-r-10"><i class="ti-settings"></i></div>
-                                                <div class="mail-contnet">
-                                                    <h5>This is title</h5> <span class="mail-desc">You can customize this template as you want</span> <span class="time">9:08 AM</span>
-                                                </div>
-                                            </a>
-                                            <!-- Message -->
-                                            <a href="#">
-                                                <div class="btn btn-primary btn-circle m-r-10"><i class="ti-user"></i></div>
-                                                <div class="mail-contnet">
-                                                    <h5>This is another title</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:02 AM</span>
+                                                    <h5>{{notification.data.user_name}}</h5> 
+                                                    <span class="mail-desc">New User was registered</span> <span class="time">{{(notification.data.created_at || {}).date | formatDate }}</span>
                                                 </div>
                                             </a>
                                         </div>
@@ -141,8 +122,6 @@
                                 </ul>
                             </div>
                         </li>
-                        <!-- End Comment -->
-                        <!-- Messages -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-muted  " href="#" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-envelope"></i>
         								<div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
@@ -211,3 +190,51 @@
             </nav>
         </div>
 </template>
+
+<script>
+    export default{
+        data(){
+            return{
+                data:{
+                    notify:false,
+                },
+                notifications:[],
+                notifiesNum:0
+            }
+        },
+        methods:{
+             getNotifies(){
+                this.$axios.get('/notifications/get').then(res=>{
+                   this.notifications = res.data.notifications
+                });
+             },
+             clickNotifications(){
+               this.data.notify =! this.data.notify;
+               this.notifiesNum = 0;
+             }
+        },
+        mounted(){
+            if(this.$auth.loggedIn){
+                var _this = this;
+                var id = this.$auth.user.id;
+                const channel = this.$Pusher.subscribe(`private-App.User.${id}`);
+                channel.bind('Illuminate\\Notifications\\Events\\BroadcastNotificationCreated',(e)=>{
+                  _this.notifiesNum++;
+                  _this.notifications.unshift({data:e});
+                })
+                this.getNotifies();
+            }
+        }
+    }
+</script>
+
+<style scoped>
+    .active {
+        display:block !important;
+    }
+    .badge.badge-danger{
+        position:absolute;
+        margin-top:-15px;
+        font-size:10px;
+    }
+</style>

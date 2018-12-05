@@ -66,7 +66,7 @@ module.exports = {
   css: [
   ],
 
-  plugins: ['~/plugins/axios.js','~/plugins/mixins/globals.js',
+  plugins: ['~/plugins/axios.js','~/plugins/mixins/globals.js','~/plugins/moment.js',
   {src:'~/plugins/custom.js',ssr:false},
   {src:'~/plugins/laravel-echo.js',ssr:false}],
 
