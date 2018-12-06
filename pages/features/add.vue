@@ -98,6 +98,7 @@
             },
             setImg(e){
            	 var e = e.target.files[0];
+           	  console.log(e)
        		 if (e) {
        		 	var _size = (e.size / 1048576);
        		 	if(_size <= 5 && e.type.match('image.*')){

@@ -29,7 +29,7 @@
                                                 <td>
                                                    {{ad.id}}
                                                 </td>
-                                                <td>{{ad.title.substr(0,15)}}...</td>
+                                                <td><nuxt-link :to="`ads/${ad.id}`">{{ad.title.substr(0,15)}}...</nuxt-link></nuxt-link></td>
                                                 <td><span>{{ad.city.name}}</span></td>
                                                 <td>
                                                     <span class="badge badge-primary">{{ad.category.name}}</span>

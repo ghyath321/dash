@@ -1,12 +1,11 @@
 <template>
     <div class="parent" :class="{'rtl':rtl}">
-        <h1 class="title bw is-size-4">{{data.title}}</h1>
+        <h1 class="title text-center is-size-4">{{data.title}}</h1>
         <div class="columns">
             <div class="column is-8 is-paddingless">
                 <header class="bw">
                     <ul :class="{'is-pulled-right':(rtl),'is-pulled-left':(!rtl)}">
                         <li>
-                             <nuxt-link :to="'/?places='+data.city.slug">
                                 <span class="no-radius tag is-dark">
                                    <i class="fas fa-map-marker-alt"></i>&nbsp
                                    <b>{{data.city.slug}}</b>&nbsp
@@ -17,44 +16,31 @@
                                     </span>
                                 </span>
                               
-                             </nuxt-link>
                         </li> 
                         <li>
-                             <no-ssr><span class="time cgray">{{data.created_at}}</span></no-ssr>
+                             <no-ssr><span class="time cgray"><i class="far fa-clock"></i> {{data.created_at | formatDate}}</span></no-ssr>
                         </li>
                     </ul>
                     <div class="is-clearfix"></div>
                 </header>
                 <no-ssr>
                     <div style="margin-bottom:10px">
-                         <vue-gallery :images="images" :index="index" @close="index = null"></vue-gallery>
-                        
                             <div class="row">
                               <div class="columnt" v-for="(image, imageIndex) in images">
-                                <img class="image" :src="image" :alt="data.title" style="width:90%" @click="changeImg($event,imageIndex)">
+                                <img class="image" :src="image" :alt="data.title" style="width:90%" @click="changeImg($event)">
                               </div>
                             </div>
-                            
                             <div class="containert has-text-centered">
-                              <img id="expandedImg" @click="index = showimg" >
+                              <img id="expandedImg">
                             </div>
-    
                     </div>
-                    <div class="bw content"><pre>{{data.description}}</pre></div>
+                    <div class="content bg-white">
+                        <pre>{{data.description}}</pre>
+                    </div>
                 </no-ssr>
             </div>
             <div class="column bw is-4">
                 
-                <div class="columns is-mobile">
-                    <div class="column is-1">
-                        <span class="tag is-info is-medium is-rounded">+{{data.rates.length}}</span>
-                    </div>
-                    <div class="column">
-                        <no-ssr>
-                            <star-rating :increment="0.05" :read-only="true" :rating="fetchRates(data.rates)" @rating-selected="setRating($event,data.id)" :star-size="25" :rtl="rtl"></star-rating>
-                        </no-ssr>
-                    </div>
-                </div>
                 <div class="information">
                  
                     <div class="column">
@@ -80,28 +66,21 @@
                     </template>
                 </div>
                 <hr />
-                <template v-for="rater in data.rates">
-                     <b>{{rater.user.name}}</b>
-                     <no-ssr><star-rating  :read-only="true" :active-color="'gray'" :rating="rater.rate" :star-size="18" :rtl="rtl"></star-rating></no-ssr>
-                     <p class="cgray"><pre v-if="rater.content">{{rater.content}}</pre></p>
-                     <hr />
-                </template>
-<!--star ad-->  
                 
                 <template v-if="data.is_star">
                     <div class="column">
-                        <span class="cgreen"><b>{{$t('words.featured')}}</b></span>
+                        <span class="cgreen"><b>Featured</b></span>
                     </div>
                 </template> 
                 
                 <hr />
                 <div class="columns is-mobile" v-if="$auth.loggedIn && $auth.user.id == data.user_id">
                     <div class="column is-3">
-                        <button @click="deleteAd(data.id)" class="button is-danger ">{{$t('adPage.deleteBtn')}}</button>
+                        <button @click="deleteAd(data.id)" class="button is-danger ">Delete</button>
                     </div>
-                    <div class="column is-3">
-                        <nuxt-link :to="`/ad/edit/${data.id}`" class="button is-success">{{$t('adPage.editBtn')}}</nuxt-link>
-                    </div>
+                    <!--<div class="column is-3">-->
+                    <!--    <nuxt-link :to="`/ad/edit/${data.id}`" class="button is-success">{{$t('adPage.editBtn')}}</nuxt-link>-->
+                    <!--</div>-->
                 </div>
             </div>
         </div>
@@ -110,18 +89,6 @@
 
 <script>
     export default{
-        data(){
-            return{
-                images:[],
-                index:null,
-                showimg:''
-            }
-        },
-        mounted(){
-            for(var i of this.data.images){
-                this.images.push(this.URL+i.img)
-            }
-        },
         async asyncData({params,app,error}){
             var id = params.ad;
             const data = await app.$axios.get(`/ad/${id}`).catch((err) => {
@@ -135,10 +102,9 @@
             }
         },
         methods:{
-          changeImg(imgs,imageIndex) {
+          changeImg(imgs) {
                 var expandImg = document.getElementById("expandedImg");
                 expandImg.src = imgs.target.src;
-                this.showimg = imageIndex;
                 expandImg.parentElement.style.display = "block";
           },
           deleteAd(id){
@@ -159,95 +125,7 @@
                         }); 
                   }
                 })
-          },
-        //   submitCoup(){
-        //     var _this = this;
-        //     this.coupon.ad_id = this.data.id;
-        //     this.$axios.post('/submit-coupon',this.coupon)
-        //     .then((res)=>{
-        //         if(res.data.status){
-        //             this.$swal({
-        //               position: 'center',
-        //               type: 'success',
-        //               title: _this.$t('adPage.featuredAd',{day:res.data.for}),
-        //               showConfirmButton: false,
-        //               timer: 3000
-        //             })
-        //             this.enterCoupon = false;
-        //             this.getAd();
-        //         }
-        //     })
-        //     .catch(err=>{
-        //         this.$swal({
-        //           type: 'error',
-        //           title: 'Oops...',
-        //           text: 'Does not Exsist',
-        //         })
-        //     })
-        //   },
-        //   setRating(rating){
-        //       this.rate.rate = rating;
-        //   },
-        //   sendRating(id){
-        //       this.rate.ad_id = id;
-        //       if(this.rate.rate != ''){
-        //           this.$axios.post('/set-rating',this.rate).then(res=>{
-        //               this.rate.content = '';
-        //               this.getAd();
-        //           })  
-        //       }
-        //   },
-          fetchRates(rates){
-            if(rates.length > 0){
-              var storage = [];
-              for(var v in rates){
-                storage.push(rates[v].rate)
-              }
-              return this.avarig(storage,rates.length);
-              
-            }
-          },
-          getSum(total, num) {
-              return total + num;
-          },
-          avarig(rates,length){
-            return rates.reduce(this.getSum) / length;
-          },
-          ratingCurrentUser(){
-              if(this.$auth.loggedIn){
-                  if(this.$auth.user.rates.length > 0){
-                      for(var rate of this.$auth.user.rates){
-                          if(rate.ad_id == this.data.id){
-                              return rate;
-                          }
-                      }
-                  }
-                  return {rate:0,content:''};
-              }
-          },
-        //   addFav(id){
-        //       if(this.$auth.loggedIn){
-        //           this.inSending = true;
-        //           this.$axios.post('/ad/fav',{id:id}).then(res=>{
-        //               this.isFav = true;
-        //               this.inSending = false
-        //           }).catch(err=>{
-        //               this.isFav = false;
-        //               this.inSending = false
-        //           })
-        //       }
-        //   },
-        //   removeFav(id){
-        //       if(this.$auth.loggedIn){
-        //           this.inSending = true;
-        //           this.$axios.post('/remove-fav',{id:id}).then(res=>{
-        //               this.isFav = false;
-        //               this.inSending = false
-        //           }).catch(err=>{
-        //               this.inSending = false
-        //           })
-        //       }
-        //   }
+          }
         }
     }
 </script>
