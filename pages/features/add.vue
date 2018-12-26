@@ -1,17 +1,17 @@
 <template>
-    <div class="columns is-multiline is-centered">
-        <div class="column is-8">
+    <div class="container">
+        <div class="col-8">
             <div class="field">
               <label >Name</label>
               <div class="control">
-                <input v-model="feature.name" class="input is-primary" type="text" placeholder="Primary input">
+                <input v-model="feature.name" class="form-control" type="text">
               </div>
             </div>
         </div>
-         <div class="column is-5 has-text-centered">
+         <div class="col-5 is-center">
             <div class="field">
               <label >Logo</label>
-              <div class="control has-text-centered">
+              <div class="control is-center">
                 <div class="file has-name is-boxed">
                   <label class="file-label is-centered">
                     <input class="file-input" @change="setImg($event)" type="file">

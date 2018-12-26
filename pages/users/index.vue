@@ -63,6 +63,7 @@
 
 <script>
     export default{
+        middleware:'auth',
         watchQuery:['page','name','status','update'],
         async asyncData({app,query}){
             var page = 1;

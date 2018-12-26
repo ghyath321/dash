@@ -1,21 +1,20 @@
 <template>
-    <div class="parent" :class="{'rtl':rtl}">
-        <h1 class="title text-center is-size-4">{{data.title}}</h1>
+    <div class="parent">
+        <h1 class="text-center is-size-4">{{data.title}}</h1>
         <div class="columns">
             <div class="column is-8 is-paddingless">
                 <header class="bw">
-                    <ul :class="{'is-pulled-right':(rtl),'is-pulled-left':(!rtl)}">
+                    <ul>
                         <li>
-                                <span class="no-radius tag is-dark">
-                                   <i class="fas fa-map-marker-alt"></i>&nbsp
-                                   <b>{{data.city.slug}}</b>&nbsp
-                                   <span class="no-radius tag is-primary" v-if="data.village">
-                                       <b>
-                                           <span>{{data.village.slug}}</span>
-                                       </b>
-                                    </span>
+                            <span class="no-radius tag is-dark">
+                               <i class="fas fa-map-marker-alt"></i>&nbsp
+                               <b class="badge badge-success">{{data.city.slug}}</b>&nbsp
+                               <span class="no-radius tag is-primary" v-if="data.village">
+                                   <b>
+                                       <span class="badge badge-info">{{data.village.slug}}</span>
+                                   </b>
                                 </span>
-                              
+                            </span>
                         </li> 
                         <li>
                              <no-ssr><span class="time cgray"><i class="far fa-clock"></i> {{data.created_at | formatDate}}</span></no-ssr>
@@ -26,11 +25,13 @@
                 <no-ssr>
                     <div style="margin-bottom:10px">
                             <div class="row">
-                              <div class="columnt" v-for="(image, imageIndex) in images">
-                                <img class="image" :src="image" :alt="data.title" style="width:90%" @click="changeImg($event)">
+                             <div class="row item-img" v-for="(image, imageIndex) in data.images">
+                              <div @click="index = imageIndex" class="columnt">
+                                <img class="image" @click="index = imageIndex" :src="URL+image.img" :alt="data.title">
                               </div>
                             </div>
-                            <div class="containert has-text-centered">
+                            </div>
+                            <div class="containert text-center">
                               <img id="expandedImg">
                             </div>
                     </div>
@@ -47,10 +48,10 @@
                         <span> <b>Category</b>:</span>  
                         <span class="cred">
                             <nuxt-link class="cred" :to="`${URL}/${data.category.slug}`">
-                                <span class="tag is-info">{{data.category.slug}}</span> 
+                                <span class="badge badge-info">{{data.category.slug}}</span> 
                             </nuxt-link>
                             <nuxt-link v-if="data.section" class="cred" :to="`${URL}/${data.category.slug}&${data.section.slug}`">
-                                <span class="tag is-link">{{data.section.slug}}</span>
+                                <span class="badge badge-primary">{{data.section.slug}}</span>
                             </nuxt-link>
                         </span>
                     </div>
@@ -74,10 +75,11 @@
                 </template> 
                 
                 <hr />
-                <div class="columns is-mobile" v-if="$auth.loggedIn && $auth.user.id == data.user_id">
-                    <div class="column is-3">
-                        <button @click="deleteAd(data.id)" class="button is-danger ">Delete</button>
-                    </div>
+                <div class="columns is-mobile">
+                    <button @click="deleteAd(data.id)" class="btn btn-danger ">Delete</button>
+                    <span @click="accept(data.id)" v-if="!data.is_accepted" class="btn btn-success">Accept</span>
+                    <span @click="activation(data.id)" v-if="!data.active" class="btn btn-info">Active</span>
+                    <span @click="activation(data.id)" v-if="data.active && data.is_accepted" class="btn btn-warning">Disabled</span>
                     <!--<div class="column is-3">-->
                     <!--    <nuxt-link :to="`/ad/edit/${data.id}`" class="button is-success">{{$t('adPage.editBtn')}}</nuxt-link>-->
                     <!--</div>-->
@@ -89,6 +91,11 @@
 
 <script>
     export default{
+        data(){
+          return{
+              images:[]
+          }  
+        },
         async asyncData({params,app,error}){
             var id = params.ad;
             const data = await app.$axios.get(`/ad/${id}`).catch((err) => {
@@ -102,10 +109,31 @@
             }
         },
         methods:{
+          routing(data = null){
+             this.$router.push(
+                    {
+                        path:'',
+                        query:{
+                            update:(data.update)?data.update:undefined,
+                        }
+                        
+                    }
+                );
+          },
           changeImg(imgs) {
                 var expandImg = document.getElementById("expandedImg");
                 expandImg.src = imgs.target.src;
                 expandImg.parentElement.style.display = "block";
+          },
+          activation(id){
+                this.$axios.post('/ad/activation',{id:id}).then(res=>{
+                   this.routing({update:`${id}-update-${res.data.status}`});
+                })
+          },
+          accept(id){
+                this.$axios.post('/ad/accept',{id:id}).then(res=>{
+                   this.routing({update:`${id}-accept`});
+                })
           },
           deleteAd(id){
             var _this = this;
@@ -120,8 +148,7 @@
                 }).then((result) => {
                   if (result.value) {
                         _this.$axios.post('/ad/delete',{id:id}).then(res=>{
-                            _this.router.go(-1);
-                            _this.$toast.success('Deleted!')
+                            _this.$router.go(-1);
                         }); 
                   }
                 })
@@ -177,22 +204,35 @@
         padding:21px;
         font-size:20px;
     }
-    img.image{
-        width:50%;
+     img.image{
+        width:auto !important;
+        max-width:inherit !important;
         margin:auto;
+        height:auto !important;
+        max-height:inherit !important;
     }
- 
-.columnt {
-    float: left;
-    width: 25%;
-    padding: 10px;
-}
-
-/* Style the images inside the grid */
-.columnt img {
-    opacity: 0.8; 
-    cursor: pointer; 
-}
+    .row.item-img{
+      border:5px solid #eee;
+      float: left;
+      margin:10px;
+      width: 25%;
+      height: 150px;
+      overflow: hidden;
+    }
+    
+    .columnt{
+        width: 100%;
+        height: 150px;
+        position:relative;
+    }
+    .columnt img {
+        cursor: pointer; 
+        opacity: 1;
+        position:absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
 
 .columnt img:hover {
     opacity: 1;

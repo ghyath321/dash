@@ -14,7 +14,6 @@
             <!-- End Bread crumb -->
             <!-- Container fluid  -->
             <div class="container-fluid">
-                <!-- Start Page Content -->
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card p-30">
@@ -37,7 +36,7 @@
                                 </div>
                                 <div class="media-body media-text-right">
                                     <h2>{{info.ads.not_accepted}}</h2>
-                                    <p class="m-b-0">In preview Ads</p>
+                                    <p class="m-b-0"><nuxt-link to="ads?is=pending">In preview Ads</nuxt-link></p>
                                 </div>
                             </div>
                         </div>
@@ -69,7 +68,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
@@ -141,8 +139,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
             <!-- End Container fluid  -->
             <!-- footer -->

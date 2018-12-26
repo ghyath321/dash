@@ -67,6 +67,7 @@
 <script>
 import eachAd from '~/components/eachAd.vue';
     export default{
+        middleware:'auth',
         watchQuery:['page','category','place','type','q','update','status','is'],
         async asyncData({app,query}){
             var page = 1;
