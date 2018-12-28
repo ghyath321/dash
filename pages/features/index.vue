@@ -1,43 +1,42 @@
 <template>
-    <div class="has-text-centered">
+    <div class="has-text-centered container">
         <h1 class="title">Features</h1>
         <h2 class="subtitle">All</h2>
         <hr />
         
-        <div class="column is-12">
-            <div class="table__wrapper">
-              <table class="table is-bordered is-fullwidth">
-                <thead>
-                    <tr>
-                        <td>#</td>
-                        <td>Name</td>
-                        <td>Address</td>
-                        <td>Phone Number</td>
-                        <td>State</td>
-                        <td>Options</td>
-                    </tr>
-                </thead>
-                <tbody>
-                  <tr  v-for="feature in features">
-                    <td>{{feature.id}}</td>
-                    <td><nuxt-link :to="`/features/${feature.id}`">{{feature.name}}</nuxt-link></td>
-                    <td>{{feature.address}}</td>
-                    <td>{{feature.phone}}</td>
-                     <td>
-                        <i v-if="feature.state" :class="{'has-text-primary':feature.state}" class="fas fa-circle"></i>
-                        <i v-else class="fas fa-circle"></i>
-                    </td>
-                    <td>
-                        <button @click="Delete(feature.id,$event)" class="button is-danger">Delete</button>
-                        <button class="button is-link"><nuxt-link class="has-text-white" :to="`/features/edit/${feature.id}`">Edit</nuxt-link></button>
-                        <button @click="changeState(feature.id,$event)" v-if="feature.state" class="button is-info">Un active</button>
-                        <button @click="changeState(feature.id,$event)" v-else class="button is-primary">Active</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-        </div>
+    <div class="col-xs-12">
+      <div class="table-responsive">
+        <table summary="This table shows how to create responsive tables using Bootstrap's default functionality" class="table table-bordered table-hover">
+          <thead>
+             <tr>
+                <td>#</td>
+                <td>Name</td>
+                <td>Address</td>
+                <td>Phone Number</td>
+                <td>State</td>
+                <td>Options</td>
+             </tr>
+          </thead>
+          <tbody>
+            <tr v-for="feature in features">
+                <td>{{feature.id}}</td>
+                <td><nuxt-link :to="`/features/${feature.id}`">{{feature.name}}</nuxt-link></td>
+                <td>{{feature.address}}</td>
+                <td>{{feature.phone}}</td>
+                <td>
+                    <i :style="{color:(feature.state)?'green':'gray'}" class="fas fa-circle"></i>
+                </td>
+                <td>
+                    <button @click="Delete(feature.id,$event)" class="btn btn-danger">Delete</button>
+                    <button class="btn btn-success"><nuxt-link class="color-white" :to="`/features/edit/${feature.id}`">Edit</nuxt-link></button>
+                    <button @click="changeState(feature.id,$event)" v-if="feature.state" class="btn btn-info">Un active</button>
+                    <button @click="changeState(feature.id,$event)" v-else class="btn btn-primary">Active</button>
+                </td>
+              </tr>
+          </tbody>
+        </table>
+      </div><!--end of .table-responsive-->
+    </div>
     </div>
 </template>
 

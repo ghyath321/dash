@@ -4,18 +4,17 @@
             <div class="field">
               <label >Name</label>
               <div class="control">
-                <input v-model="feature.name" class="form-control" type="text">
+                <input v-model="feature.name" class="form-control" placeholder="Business name" type="text">
               </div>
             </div>
         </div>
-         <div class="col-5 is-center">
-            <div class="field">
+         <div class="col-8 is-center">
+            <div class="card">
               <label >Logo</label>
-              <div class="control is-center">
-                <div class="file has-name is-boxed">
-                  <label class="file-label is-centered">
-                    <input class="file-input" @change="setImg($event)" type="file">
-                    <img class="is-rounded" height="40%" width="100%" v-if="logo != ''" id="logo">
+                <div class="card-body">
+                  <label class="col-12">
+                    <input class="hide" @change="setImg($event)" type="file">
+                    <img class="is-rounded" style="max-height:40%;max-width:40%" v-if="logo != ''" id="logo">
                     <span class="file-cta">
                       <span class="file-icon">
                         <i class="fas fa-upload"></i>
@@ -29,42 +28,47 @@
                     </span>
                   </label>
                 </div>
-              </div>
             </div>
         </div>
         
-        <div class="column columns is-8">
-            <div class="column">
+            <div class="col-8">
                  <div class="field">
                   <label >Phone Number</label>
                   <div class="control">
-                    <input v-model="feature.phone" class="input is-primary" type="text" placeholder="Primary input">
+                    <input v-model="feature.phone" class="form-control" type="text" placeholder="Phone Number">
                   </div>
                 </div>
             </div>
-           <div class="column">
+            <div class="col-8">
+                 <div class="field">
+                  <label >Email Address</label>
+                  <div class="control">
+                    <input v-model="feature.email" class="form-control" type="text" placeholder="Email Address">
+                  </div>
+                </div>
+            </div>
+           <div class="col-8">
                  <div class="field">
                   <label >Address</label>
                   <div class="control">
-                    <input v-model="feature.address" class="input is-primary" type="text" placeholder="Primary input">
+                    <input v-model="feature.address" class="form-control" type="text" placeholder="Address">
                   </div>
                 </div>
             </div>
-        </div>
         
-         <div class="column is-8">
+         <div class="col-8">
             <div class="field">
               <label >Description</label>
               <div class="control">
-                <textarea v-model="feature.description" class="input is-primary"></textarea>
+                <textarea placeholder="Description" v-model="feature.description" class="form-control"></textarea>
               </div>
             </div>
-        </div>
+        </div><br />
         
-         <div class="column is-8">
+         <div class="col-8">
             <div class="field">
               <div class="control">
-                <a @click="create()" class="button is-info">Create</a>
+                <a @click="create()" class="btn btn-info" style="color:white">Create</a>
               </div>
             </div>
         </div>
@@ -81,6 +85,7 @@
                     name:'',
                     description:'',
                     phone:'',
+                    email:'',
                     address:''
                 },
                 logo:'',

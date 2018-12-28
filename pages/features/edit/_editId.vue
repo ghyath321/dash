@@ -1,22 +1,20 @@
 <template>
-    <div class="columns is-multiline is-centered">
-        <div class="column is-8">
+    <div class="container">
+        <div class="col-8">
             <div class="field">
               <label >Name</label>
               <div class="control">
-                <input v-model="feature.name" class="input is-primary" type="text" placeholder="Primary input">
+                <input v-model="feature.name" class="form-control" placeholder="Business name" type="text">
               </div>
             </div>
         </div>
-        
-         <div class="column is-5 has-text-centered">
-            <div class="field">
+         <div class="col-8 is-center">
+            <div class="card">
               <label >Logo</label>
-              <div class="control has-text-centered">
-                <div class="file has-name is-boxed">
-                  <label class="file-label is-centered">
-                    <input class="file-input" @change="setImg($event)" type="file">
-                    <img class="is-rounded" width="100%" v-if="logo != ''" :src="URL+logo" id="logo">
+                <div class="card-body">
+                  <label class="col-12">
+                    <input class="hide" @change="setImg($event)" type="file">
+                    <img class="is-rounded" style="max-height:40%;max-width:40%" v-if="logo != ''" :src="URL+logo" id="logo">
                     <span class="file-cta">
                       <span class="file-icon">
                         <i class="fas fa-upload"></i>
@@ -30,49 +28,53 @@
                     </span>
                   </label>
                 </div>
-              </div>
             </div>
         </div>
         
-        <div class="column columns is-8">
-            <div class="column">
+            <div class="col-8">
                  <div class="field">
                   <label >Phone Number</label>
                   <div class="control">
-                    <input v-model="feature.phone" class="input is-primary" type="text" placeholder="Primary input">
+                    <input v-model="feature.phone" class="form-control" type="text" placeholder="Phone Number">
                   </div>
                 </div>
             </div>
-           <div class="column">
+            <div class="col-8">
+                 <div class="field">
+                  <label >Email Address</label>
+                  <div class="control">
+                    <input v-model="feature.email" class="form-control" type="text" placeholder="Email Address">
+                  </div>
+                </div>
+            </div>
+           <div class="col-8">
                  <div class="field">
                   <label >Address</label>
                   <div class="control">
-                    <input v-model="feature.address" class="input is-primary" type="text" placeholder="Primary input">
+                    <input v-model="feature.address" class="form-control" type="text" placeholder="Address">
                   </div>
                 </div>
             </div>
-        </div>
         
-         <div class="column is-8">
+         <div class="col-8">
             <div class="field">
               <label >Description</label>
               <div class="control">
-                <textarea v-model="feature.description" class="input is-primary"></textarea>
+                <textarea placeholder="Description" v-model="feature.description" class="form-control"></textarea>
               </div>
             </div>
-        </div>
+        </div><br />
         
-         <div class="column is-8">
+         <div class="col-8">
             <div class="field">
               <div class="control">
-                <a @click="update()" class="button is-info">Update</a>
+                <a @click="update()" class="btn btn-info" style="color:white">Update</a>
               </div>
             </div>
         </div>
         
     </div>
 </template>
-
 <script>
     export default{
         middleware:'auth',

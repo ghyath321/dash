@@ -96,6 +96,7 @@
               images:[]
           }  
         },
+        watchQuery:['update'],
         async asyncData({params,app,error}){
             var id = params.ad;
             const data = await app.$axios.get(`/ad/${id}`).catch((err) => {
