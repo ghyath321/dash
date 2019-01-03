@@ -8,6 +8,7 @@ module.exports = {
   },
   env: {
     apiUrl: 'http://view-ghyath4.c9users.io:8081',
+    primaryUrl: 'https://theprimeservice.com',
     pusherKey:'ec516c25671a3ff0fb1c'
   },
   head: {

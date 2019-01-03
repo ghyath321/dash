@@ -42,6 +42,7 @@
 
 <script>
     export default{
+        middleware:'auth',
         watchQuery:['update'],
         async asyncData({app,error}){
             var res = await app.$axios.get('/feature/all').catch(err=>{

@@ -34,6 +34,7 @@
 
 <script>
     export default{
+        middleware:'auth',
         async asyncData({app,params}){
             var res = await app.$axios.get(`/feature/show/${params.id}`);
             return {feature:res.data.feature}

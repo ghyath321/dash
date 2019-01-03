@@ -154,8 +154,7 @@ export default {
   components:{
     sideNav
   },
-  mounted(){
-  },
+  
   async asyncData({app}){
       var info = await app.$axios.get('/get_info');
       return {info:info.data};

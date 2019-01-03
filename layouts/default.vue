@@ -1,8 +1,9 @@
 <template>
   <div id="main-wrapper">
-    <navbar></navbar>
-    <side-nav />
-    <div class="page-wrapper">
+    <navbar v-if="$auth.loggedIn"></navbar>
+   
+    <div >  <!--class="page-wrapper"-->
+      <side-nav v-if="$auth.loggedIn" />
       <nuxt/>
     </div>
   </div>
