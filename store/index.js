@@ -38,7 +38,7 @@ export const getters = {
 export const actions = {
   
    async nuxtServerInit({ commit },{app}) {
-      commit('setURL', process.env.apiUrl)
+      commit('setURL', process.env.imageUrl)
     //   await app.$axios.get('/get-cities/1').then(res=>{
     //           commit('SET_CITIES', res.data)
     //   })

@@ -4,11 +4,11 @@ module.exports = {
   mode: 'universal',
   
   axios: {
-      baseURL: 'http://view-ghyath4.c9users.io:8081/api/admin'
+      baseURL: 'https://api.theprimeservice.com/api/admin'
   },
   env: {
-    apiUrl: 'http://view-ghyath4.c9users.io:8081',
-    primaryUrl: 'https://theprimeservice.com',
+    imageUrl: 'https://www.theprimeservice.com',
+    primaryUrl: 'https://www.theprimeservice.com',
     pusherKey:'ec516c25671a3ff0fb1c'
   },
   head: {
@@ -28,7 +28,6 @@ module.exports = {
     script: [
       // Supported  Nuxt 1.0
       { src: '/js/lib/jquery/jquery.min.js', body: true },
-      { src: '/js/lib/bootstrap/js/popper.min.js', body: true },
       { src: '/js/lib/bootstrap/js/popper.min.js', body: true },
       { src: '/js/jquery.slimscroll.js', body: true },
       { src: '/js/sidebarmenu.js', body: true },
